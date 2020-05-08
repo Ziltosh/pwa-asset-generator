@@ -260,34 +260,37 @@ const saveImages = async (
 
   return Promise.all(
     imageList.map(async ({ name, width, height, scaleFactor, orientation }) => {
-      const { type, quality } = options;
-      const path = file.getImageSavePath(name, output, type);
+      
+      setTimeout(() => {
+        const { type, quality } = options;
+        const path = file.getImageSavePath(name, output, type);
 
-      try {
-        const page = await browser.newPage();
-        await page.setViewport({ width, height });
+        try {
+          const page = await browser.newPage();
+          await page.setViewport({ width, height });
 
-        if (address) {
-          await page.goto(address, { waitUntil: 'networkidle0' });
-        } else {
-          await page.setContent(shellHtml);
+          if (address) {
+            await page.goto(address, { waitUntil: 'networkidle0' });
+          } else {
+            await page.setContent(shellHtml);
+          }
+
+          await page.screenshot({
+            path,
+            omitBackground: !options.opaque,
+            ...(type !== 'png' ? { quality } : {}),
+          });
+
+          await page.close();
+
+          logger.success(`Saved image ${name}`);
+
+          return { name, width, height, scaleFactor, path, orientation };
+        } catch (e) {
+          logger.error(e.message);
+          throw Error(`Failed to save image ${name}`);
         }
-
-        await page.screenshot({
-          path,
-          omitBackground: !options.opaque,
-          ...(type !== 'png' ? { quality } : {}),
-        });
-
-        await page.close();
-
-        logger.success(`Saved image ${name}`);
-
-        return { name, width, height, scaleFactor, path, orientation };
-      } catch (e) {
-        logger.error(e.message);
-        throw Error(`Failed to save image ${name}`);
-      }
+      }, Math.ceil(Math.random()*10000));
     }),
   );
 };
