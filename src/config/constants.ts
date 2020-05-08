@@ -139,6 +139,7 @@ export default {
     '--mute-audio',
     '--no-first-run',
     '--headless',
+    '--no-sandbox'
   ],
 
   CHROME_LAUNCHER_DEBUG_PORT: 9222,
