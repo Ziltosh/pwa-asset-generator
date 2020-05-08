@@ -261,7 +261,7 @@ const saveImages = async (
   return Promise.all(
     imageList.map(async ({ name, width, height, scaleFactor, orientation }) => {
       
-      setTimeout(() => {
+      setTimeout(async () => {
         const { type, quality } = options;
         const path = file.getImageSavePath(name, output, type);
 
