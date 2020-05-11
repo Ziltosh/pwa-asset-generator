@@ -5,6 +5,7 @@ import preLogger from './helpers/logger';
 import { CLIOptions, Options } from './models/options';
 import { Result } from './models/result';
 import { LoggerFunction } from './models/logger';
+import {SavedImages} from './models/image'
 
 /**
  Generates PWA assets based on a source input and saves generated images in the output folder provided
@@ -71,7 +72,7 @@ async function generateImages(
 
   const output = flags.normalizeOutput(outputFolderPath);
 
-  let savedImages = []
+  let savedImages:SavedImages[] = [];
   try {
       savedImages = await puppets.generateImages(source, output, modOptions);
   } catch (e) {
