@@ -70,7 +70,15 @@ async function generateImages(
   }
 
   const output = flags.normalizeOutput(outputFolderPath);
-  const savedImages = await puppets.generateImages(source, output, modOptions);
+
+  let savedImages = []
+  try {
+      savedImages = await puppets.generateImages(source, output, modOptions);
+  } catch (e) {
+      console.error('main js pwa asset')
+        console.error(e)
+  }
+  
 
   const manifestJsonContent = meta.generateIconsContentForManifest(
     savedImages,
