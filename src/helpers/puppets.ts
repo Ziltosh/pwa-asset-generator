@@ -254,19 +254,12 @@ const saveImages = async (
 
   if (canNavigateTo(source)) {
     address = await url.getAddress(source, options);
-    shellHtml = ''
   } else {
     shellHtml = await url.getShellHtml(source, options);
-    address = ''
   }
 
-
-  let results: SavedImage[] = [];
-
-  for (let i = 0; i < imageList.length; i++) {
-
-      const { name, width, height, scaleFactor, orientation } = imageList[i]
-
+  return Promise.all(
+    imageList.map(async ({ name, width, height, scaleFactor, orientation }) => {
       const { type, quality } = options;
       const path = file.getImageSavePath(name, output, type);
 
@@ -295,70 +288,18 @@ const saveImages = async (
           ...(type !== 'png' ? { quality } : {}),
         });
 
-          if (address) {
-              await page.goto(address, { waitUntil: 'networkidle0' });
-          } else {
-              await page.setContent(shellHtml);
-          }
+        await page.close();
 
-          await page.screenshot({
-              path,
-              omitBackground: !options.opaque,
-              ...(type !== 'png' ? { quality } : {}),
-          });
+        logger.success(`Saved image ${name}`);
 
-          await page.close();
-
-          logger.success(`Saved image ${name}`);
-
-          results.push({ name, width, height, scaleFactor, path, orientation });
+        return { name, width, height, scaleFactor, path, orientation };
       } catch (e) {
-          logger.error(e.message);
-          throw Error(`Failed to save image ${name}`);
+        logger.error(e.message);
+        throw Error(`Failed to save image ${name}`);
       }
-
-  }
-
-  return results
-
-  
-  
-//   imageList.map(async ({ name, width, height, scaleFactor, orientation }) => {
-
-      
-//         const { type, quality } = options;
-//         const path = file.getImageSavePath(name, output, type);
-
-//         try {
-//           const page = await browser.newPage();
-//           await page.setViewport({ width, height });
-
-//           if (address) {
-//             await page.goto(address, { waitUntil: 'networkidle0' });
-//           } else {
-//             await page.setContent(shellHtml);
-//           }
-
-//           await page.screenshot({
-//             path,
-//             omitBackground: !options.opaque,
-//             ...(type !== 'png' ? { quality } : {}),
-//           });
-
-//           await page.close();
-
-//           logger.success(`Saved image ${name}`);
-
-//           return { name, width, height, scaleFactor, path, orientation };
-//         } catch (e) {
-//           logger.error(e.message);
-//           throw Error(`Failed to save image ${name}`);
-//         }
-      
-//     })
-  
+    }),
+  );
 };
-
 
 const generateImages = async (
   source: string,
