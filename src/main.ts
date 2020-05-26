@@ -5,7 +5,7 @@ import preLogger from './helpers/logger';
 import { CLIOptions, Options } from './models/options';
 import { Result } from './models/result';
 import { LoggerFunction } from './models/logger';
-import {SavedImage} from './models/image'
+import constants from './config/constants';
 
 /**
  Generates PWA assets based on a source input and saves generated images in the output folder provided
@@ -122,4 +122,10 @@ async function generateImages(
   return { savedImages, htmlMeta, manifestJsonContent };
 }
 
-export { generateImages };
+/**
+ Static data for Apple Device specs that are used for generating launch images
+ */
+const appleDeviceSpecsForLaunchImages =
+  constants.APPLE_HIG_SPLASH_SCREEN_FALLBACK_DATA;
+
+export { generateImages, appleDeviceSpecsForLaunchImages };

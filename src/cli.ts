@@ -20,9 +20,9 @@ $ pwa-asset-generator --help
     -m --manifest               Web app manifest file path to automatically update manifest file with the generated icons
     -i --index                  Index HTML file path to automatically put splash screen and icon meta tags in
     -a --path                   Path prefix to prepend for href links generated for meta tags
-    -h --path-override          Override the path of images used in href/src tags of manifest and HTML files
-    -t --type                   Image type: png|jpg|jpeg  [default: png]
-    -q --quality                Image quality: 0...100 (Only for JPEG)  [default: 100]
+    -v --path-override          Override the path of images used in href/src tags of manifest and HTML files
+    -t --type                   Image type: png|jpg  [default: jpg]
+    -q --quality                Image quality: 0...100 (Only for JPG)  [default: 70]
     -h --splash-only            Only generate splash screens  [default: false]
     -c --icon-only              Only generate icons  [default: false]
     -f --favicon                Generate favicon image and HTML meta tag  [default: false]
@@ -31,15 +31,17 @@ $ pwa-asset-generator --help
     -r --portrait-only          Only generate portrait splash screens  [default: false]
     -d --dark-mode              Generate iOS splash screen meta with (prefers-color-scheme: dark) media attr  [default: false]
     -u --single-quotes          Generate HTML meta tags with single quotes  [default: false]
+    -x --xhtml                  Generate HTML meta tags by self-closing the tags  [default: false]
     -g --log                    Logs the steps of the library process  [default: true]
 
   Examples
     $ pwa-asset-generator logo.html
     $ pwa-asset-generator logo.svg -i ./index.html -m ./manifest.json
     $ pwa-asset-generator https://your-cdn-server.com/assets/logo.png ./ -t jpg -q 90 --splash-only --portrait-only
+    $ pwa-asset-generator logo.svg ./assets --splash-only --xhtml --single-quotes
     $ pwa-asset-generator logo.svg ./assets --scrape false --icon-only --path "%PUBLIC_URL%"
-    $ pwa-asset-generator logo.svg ./assets --icon-only --favicon --opaque false --maskable false
-    $ pwa-asset-generator logo.svg ./assets --dark-mode --background dimgrey --splash-only --type jpeg --quality 80
+    $ pwa-asset-generator logo.svg ./assets --icon-only --favicon --opaque false --maskable false --type png
+    $ pwa-asset-generator logo.svg ./assets --dark-mode --background dimgrey --splash-only --quality 80
     $ pwa-asset-generator logo.svg ./assets --padding "calc(50vh - 5%) calc(50vw - 10%)" --path-override "./your-custom-image-folder-path"
     $ pwa-asset-generator https://raw.githubusercontent.com/onderceylan/pwa-asset-generator/HEAD/static/logo.png ./temp -p "15%" -b "linear-gradient(to right, #fa709a 0%, #fee140 100%)"
 
@@ -62,6 +64,7 @@ $ pwa-asset-generator --help
     --portrait-only
     --dark-mode
     --single-quotes
+    --xhtml
     --log false
 `,
   // TODO: remove when inferred meow types are corrected

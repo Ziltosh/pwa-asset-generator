@@ -1,4 +1,5 @@
 import execa from 'execa';
+import constants from './config/constants';
 
 describe('CLI', () => {
   test('throws error when input is not provided', async () => {
@@ -19,7 +20,7 @@ describe('CLI', () => {
           '--favicon',
           '--path="%PUBLIC_URL%"',
           '--dark-mode',
-          '--type=jpeg',
+          '--type=jpg',
           '--quality=20',
         ],
         { env: { PAG_TEST_MODE: '1' } },
@@ -29,5 +30,12 @@ describe('CLI', () => {
       console.error(e);
     }
     expect(response.stdout).toMatchSnapshot();
+  });
+
+  test('does not have any conflicting shorthand options', () => {
+    const flagShorthands = Object.values(constants.FLAGS).map(
+      (flag) => flag.alias,
+    );
+    expect(new Set(flagShorthands).size).toBe(flagShorthands.length);
   });
 });
