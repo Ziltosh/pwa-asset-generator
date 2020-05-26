@@ -66,8 +66,6 @@ const getLocalBrowserInstance = async (
 };
 
 const launchSystemBrowser = (): Promise<LaunchedChrome> => {
-  throw Error(constants.CHROME_LAUNCH_ARGS.toString())
-
   const launchOptions: ChromeLauncherOptions = {
     chromeFlags: constants.CHROME_LAUNCH_ARGS,
     logLevel: 'silent',
@@ -120,8 +118,11 @@ const getBrowserInstance = async (
   let chrome: LaunchedChrome | undefined;
 
   try {
+    logger.error(constants.CHROME_LAUNCH_ARGS.toString())
     chrome = await launchSystemBrowser();
+    logger.success(constants.CHROME_LAUNCH_ARGS.toString())
     browser = await getSystemBrowserInstance(chrome, launchArgs);
+    
   } catch (e) {
     // Kill chrome instance manually in case of connection error
     if (e.code === LAUNCHER_CONNECTION_REFUSED_ERROR_CODE) {
