@@ -66,8 +66,8 @@ const getLocalBrowserInstance = async (
 };
 
 const launchSystemBrowser = (): Promise<LaunchedChrome> => {
-  throw Error(constants.CHROME_LAUNCH_ARGS)
-  
+  throw Error(constants.CHROME_LAUNCH_ARGS.toString())
+
   const launchOptions: ChromeLauncherOptions = {
     chromeFlags: constants.CHROME_LAUNCH_ARGS,
     logLevel: 'silent',
