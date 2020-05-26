@@ -271,6 +271,10 @@ const saveImages = async (
       const path = file.getImageSavePath(name, output, type);
 
       try {
+<<<<<<< HEAD
+          const page = await browser.newPage();
+          await page.setViewport({ width, height });
+=======
         const page = await browser.newPage();
         await page.setViewport({ width, height });
 
@@ -294,6 +298,7 @@ const saveImages = async (
           omitBackground: !options.opaque,
           ...(type !== 'png' ? { quality } : {}),
         });
+>>>>>>> upstream/master
 
           if (address) {
               await page.goto(address, { waitUntil: 'networkidle0' });
