@@ -152,7 +152,8 @@ export default {
     '--no-first-run',
     '--headless',
     '--no-sandbox',
-    '--disable-setuid-sandbox'
+    '--disable-setuid-sandbox',
+    '--user-data-dir'
   ],
 
   CHROME_LAUNCHER_DEBUG_PORT: 9222,
